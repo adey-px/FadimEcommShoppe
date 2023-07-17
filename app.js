@@ -1,6 +1,7 @@
 import express from 'express';
 import 'dotenv/config';
 import morgan from 'morgan';
+import mongoose from 'mongoose';
 
 // Instance of server & env vars
 const app = express();
@@ -26,7 +27,19 @@ app.get(`${pre}/products`, (req, res) => {
 	res.send(product);
 });
 
+// Connect mongodb 
+const mongoURI = process.env.MONGO_URI;
+
+mongoose
+	.connect(mongoURI)
+	.then(() => {
+		console.log('**Connected mongodb database');
+	})
+	.catch((err) => {
+		console.log(err);
+	});
+
 // Configure dev server
 app.listen(5000, () => {
-	console.log('Started development server');
+	console.log('**Started development server');
 });
